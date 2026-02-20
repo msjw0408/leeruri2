@@ -4,25 +4,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>나만의 블로그 | Personal Blog</title>
-    <!-- 구글 폰트: Pretendard 대용으로 Noto Sans KR 사용 -->
+    <title>피클볼 라이프 | My Pickleball Life</title>
+    <meta name="description" content="피클볼을 사랑하는 사람의 개인 홈페이지입니다. 대회 정보, 연습 기록, 코트 안내 등 피클볼 관련 정보를 공유합니다.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Outfit:wght@400;600;700;800;900&family=Alex+Brush&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        /* 기본 설정 */
         :root {
-            --bg-color: #050505;
-            /* 아주 어두운 배경 */
-            --card-bg: #111111;
-            --text-main: #ffffff;
-            --text-sub: #aaaaaa;
-            --accent-blue: #0047FF;
-            /* MLP 스타일 블루 */
-            --accent-red: #FF3B30;
-            /* MLP 스타일 레드 */
-            --font-main: 'Noto Sans KR', sans-serif;
+            --bg-primary: #fafafa;
+            --bg-secondary: #f2f2f2;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f7f7f7;
+            --accent-green: #1a9f4a;
+            --accent-lime: #6aad0e;
+            --accent-teal: #0f9688;
+            --accent-yellow: #e6b800;
+            --gradient-main: linear-gradient(135deg, #1a9f4a, #0f9688);
+            --gradient-hero: linear-gradient(135deg, #f5f5f5 0%, #fafafa 50%, #f0f0f0 100%);
+            --text-main: #1a1a1a;
+            --text-sub: #555555;
+            --text-muted: #888888;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --font-ko: 'Noto Sans KR', sans-serif;
+            --font-en: 'Outfit', sans-serif;
+            --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --shadow-glow: 0 0 20px rgba(26, 159, 74, 0.1);
         }
 
         * {
@@ -31,11 +40,15 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: var(--font-main);
-            background-color: var(--bg-color);
+            font-family: var(--font-ko);
+            background-color: var(--bg-primary);
             color: var(--text-main);
-            line-height: 1.6;
+            line-height: 1.7;
             overflow-x: hidden;
         }
 
@@ -48,398 +61,1635 @@
             list-style: none;
         }
 
-        /* 유틸리티 클래스 */
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 24px;
         }
 
-        .btn {
-            display: inline-block;
-            padding: 12px 24px;
-            font-weight: 700;
-            text-transform: uppercase;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .btn-primary {
-            background-color: var(--accent-blue);
-            color: #fff;
-            border: 2px solid var(--accent-blue);
-        }
-
-        .btn-primary:hover {
-            background-color: transparent;
-            color: var(--accent-blue);
-        }
-
-        .btn-outline {
-            background-color: transparent;
-            border: 2px solid #fff;
-            color: #fff;
-        }
-
-        .btn-outline:hover {
-            background-color: #fff;
-            color: #000;
-        }
-
-        /* 헤더 */
-        header {
+        /* ===== 헤더 ===== */
+        .header {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            padding: 20px 0;
-            background-color: rgba(5, 5, 5, 0.9);
-            backdrop-filter: blur(10px);
+            padding: 16px 0;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
             z-index: 1000;
-            border-bottom: 1px solid #222;
+            transition: all 0.3s ease;
         }
 
-        nav {
+        .header.scrolled {
+            padding: 10px 0;
+            background: rgba(255, 255, 255, 0.97);
+        }
+
+        .header-inner {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .logo {
-            font-size: 1.5rem;
-            font-weight: 900;
-            letter-spacing: -1px;
-            color: #fff;
-        }
-
-        .logo span {
-            color: var(--accent-blue);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 30px;
-        }
-
-        .nav-links a {
-            font-weight: 700;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: var(--accent-blue);
-        }
-
-        /* 히어로 섹션 */
-        .hero {
-            height: 100vh;
             display: flex;
             align-items: center;
-            justify-content: center;
-            text-align: center;
-            /* 배경 이미지를 background.jpg로 변경 */
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('background.jpg') center/cover no-repeat;
-            padding-top: 80px;
+            gap: 12px;
+            text-decoration: none;
         }
 
-        .hero-content h1 {
-            font-size: 4rem;
-            font-weight: 900;
-            margin-bottom: 20px;
-            line-height: 1.1;
+        .logo-img {
+            height: 70px;
+            width: auto;
+            object-fit: contain;
+            flex-shrink: 0;
+            display: block;
+        }
+
+        .club-name {
+            font-family: 'Alex Brush', cursive;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 400;
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 8px rgba(46, 204, 113, 0.3));
+            letter-spacing: 1px;
+            margin-top: 5px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .logo:hover .club-name {
+            transform: scale(1.1) rotate(-1deg);
+            filter: drop-shadow(0 4px 15px rgba(46, 204, 113, 0.5));
+            background: linear-gradient(135deg, #2ecc71, #1abc9c);
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            font-size: 0.88rem;
+            font-weight: 600;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-sub);
+            transition: color 0.3s;
+            position: relative;
+            padding: 4px 0;
         }
 
-        .hero-content p {
-            font-size: 1.2rem;
-            color: #ddd;
-            margin-bottom: 40px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-main);
+            transition: width 0.3s;
+        }
+
+        .nav-menu a:hover {
+            color: var(--accent-green);
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--text-main);
+        }
+
+        /* ===== 히어로 ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding-top: 80px;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.35) 60%, rgba(0, 0, 0, 0.55) 100%);
+            z-index: 1;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url('bpa_logo.png') 70% center / 60% no-repeat;
+            opacity: 1.0;
+            z-index: 0;
+            filter: none;
+        }
+
+        .hero-inner {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(22, 163, 74, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            padding: 6px 18px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-badge .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent-green);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.4;
+            }
+        }
+
+        .hero-title {
+            font-family: var(--font-en);
+            font-size: clamp(2rem, 8vw, 3.8rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+            color: #ffffff;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.8), 0 2px 5px rgba(0, 0, 0, 0.9);
+        }
+
+        .hero-title .highlight {
+            color: var(--accent-green);
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
+        }
+
+        .hero-desc {
+            font-size: 1.05rem;
+            color: rgba(255, 255, 255, 0.88);
+            margin-bottom: 36px;
+            max-width: 480px;
+            line-height: 1.8;
+            text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
         }
 
         .hero-buttons {
             display: flex;
-            gap: 20px;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: var(--font-ko);
+        }
+
+        .btn-primary {
+            background: var(--gradient-main);
+            color: #fff;
+            box-shadow: 0 8px 24px rgba(34, 197, 94, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(34, 197, 94, 0.4);
+        }
+
+        .btn-ghost {
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(6px);
+        }
+
+        .btn-ghost:hover {
+            background: rgba(255, 255, 255, 0.28);
+            border-color: rgba(255, 255, 255, 0.7);
+        }
+
+        .btn-instagram {
+            background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+            color: #ffffff;
+            border: none;
+            box-shadow: 0 8px 24px rgba(214, 36, 159, 0.3);
+        }
+
+        .btn-instagram:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(214, 36, 159, 0.4);
+            filter: brightness(1.1);
+        }
+
+        .hero-visual {
+            position: relative;
+            display: flex;
             justify-content: center;
         }
 
-        /* 최신 글 (Stories) 그리드 섹션 */
-        .latest-posts {
-            padding: 100px 0;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            margin-bottom: 40px;
-            border-bottom: 2px solid #333;
-            padding-bottom: 20px;
-        }
-
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: 900;
-            text-transform: uppercase;
-        }
-
-        .view-all {
-            color: var(--accent-blue);
-            font-weight: 700;
-            font-size: 0.9rem;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .card {
-            background-color: var(--card-bg);
-            border-radius: 8px;
+        .hero-img-wrapper {
+            width: 420px;
+            height: 420px;
+            border-radius: 30px;
             overflow: hidden;
-            transition: transform 0.3s;
             position: relative;
+            box-shadow: var(--shadow-lg);
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-        .card-img {
+        .hero-img-wrapper img {
             width: 100%;
-            height: 250px;
+            height: 100%;
             object-fit: cover;
         }
 
-        .card-content {
-            padding: 25px;
+        .hero-img-wrapper::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.15), transparent);
+            z-index: 1;
         }
 
-        .card-category {
+        .hero-float-card {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 16px 20px;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .float-card-1 {
+            bottom: 30px;
+            left: -40px;
+            z-index: 2;
+        }
+
+        .float-card-2 {
+            top: 40px;
+            right: -30px;
+            z-index: 2;
+            animation-delay: -2s;
+        }
+
+        .float-card-label {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .float-card-value {
+            font-family: var(--font-en);
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .float-card-value .unit {
             font-size: 0.8rem;
-            color: var(--accent-blue);
+            color: var(--accent-green);
+            margin-left: 4px;
+        }
+
+        /* ===== 공통 섹션 ===== */
+        .section {
+            padding: 100px 0;
+        }
+
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-en);
+            font-size: 0.78rem;
             font-weight: 700;
             text-transform: uppercase;
-            margin-bottom: 10px;
-            display: block;
+            letter-spacing: 2px;
+            color: var(--accent-green);
+            margin-bottom: 12px;
         }
 
-        .card-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 15px;
+        .section-label::before {
+            content: '';
+            width: 24px;
+            height: 2px;
+            background: var(--accent-green);
+        }
+
+        .section-title {
+            font-size: clamp(1.6rem, 5vw, 2.2rem);
+            font-weight: 800;
+            margin-bottom: 16px;
             line-height: 1.3;
         }
 
-        .card-excerpt {
+        .section-desc {
             color: var(--text-sub);
-            font-size: 0.95rem;
-            margin-bottom: 20px;
+            max-width: 560px;
+            margin-bottom: 48px;
         }
 
-        .card-link {
-            font-weight: 700;
-            font-size: 0.9rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
+        /* ===== 퀵 메뉴 ===== */
+        .quick-menu {
+            padding: 0;
+            margin-top: -60px;
+            position: relative;
+            z-index: 10;
         }
 
-        .card-link::after {
-            content: '→';
+        .quick-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
         }
 
-        /* 소개 섹션 */
-        .about {
-            background-color: #111;
-            padding: 100px 0;
+        .quick-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 28px 20px;
             text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
         }
 
-        .about p {
-            max-width: 800px;
-            margin: 0 auto 40px;
-            font-size: 1.1rem;
-            color: #ccc;
+        .quick-item:hover {
+            background: var(--bg-card-hover);
+            border-color: rgba(34, 197, 94, 0.3);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-glow);
         }
 
-        /* 푸터 */
-        footer {
-            padding: 60px 0;
-            background-color: #000;
-            border-top: 1px solid #222;
-        }
-
-        .footer-content {
+        .quick-icon {
+            width: 52px;
+            height: 52px;
+            margin: 0 auto 14px;
+            background: rgba(26, 159, 74, 0.08);
+            border-radius: 14px;
             display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 40px;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            color: var(--accent-green);
+            transition: all 0.3s;
         }
 
-        .footer-logo {
-            font-size: 1.5rem;
-            font-weight: 900;
-            margin-bottom: 20px;
-        }
-
-        .social-links a {
-            margin-right: 20px;
-            color: #888;
-            font-size: 0.9rem;
-        }
-
-        .social-links a:hover {
+        .quick-item:hover .quick-icon {
+            background: var(--gradient-main);
             color: #fff;
         }
 
-        .copyright {
-            margin-top: 40px;
-            color: #555;
+        .quick-label {
+            font-size: 0.92rem;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .quick-sub {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-family: var(--font-en);
+            font-weight: 600;
+        }
+
+        /* ===== 대회 정보 ===== */
+        .tournament-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .tournament-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s;
+        }
+
+        .tournament-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(26, 159, 74, 0.2);
+        }
+
+        .tournament-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .tournament-body {
+            padding: 24px;
+        }
+
+        .tournament-tag {
+            display: inline-block;
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--accent-green);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+
+        .tournament-tag.closed {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+        }
+
+        .tournament-tag.upcoming {
+            background: rgba(200, 160, 0, 0.1);
+            color: var(--accent-yellow);
+        }
+
+        .tournament-name {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .tournament-info {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .tournament-info span {
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tournament-info i {
+            color: var(--accent-green);
+            width: 16px;
+        }
+
+        /* ===== 공지사항 ===== */
+        .notice-section {
+            background: var(--bg-secondary);
+        }
+
+        .notice-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .notice-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .notice-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .notice-item:hover {
+            padding-left: 12px;
+        }
+
+        .notice-badge {
+            flex-shrink: 0;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 4px;
+            background: rgba(26, 159, 74, 0.1);
+            color: var(--accent-green);
+        }
+
+        .notice-badge.important {
+            background: rgba(239, 68, 68, 0.08);
+            color: #ef4444;
+        }
+
+        .notice-text {
+            font-size: 0.95rem;
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .notice-date {
             font-size: 0.8rem;
+            color: var(--text-muted);
+            flex-shrink: 0;
+            font-family: var(--font-en);
+        }
+
+        .ranking-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 32px;
+            border: 1px solid var(--border-color);
+        }
+
+        .ranking-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ranking-title i {
+            color: var(--accent-yellow);
+        }
+
+        .ranking-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .ranking-item:last-child {
+            border-bottom: none;
+        }
+
+        .rank-num {
+            font-family: var(--font-en);
+            font-size: 1.2rem;
+            font-weight: 800;
+            width: 32px;
             text-align: center;
         }
 
-        /* 반응형 미디어 쿼리 */
-        @media (max-width: 768px) {
-            .hero-content h1 {
-                font-size: 2.5rem;
+        .rank-num.gold {
+            color: #facc15;
+        }
+
+        .rank-num.silver {
+            color: #94a3b8;
+        }
+
+        .rank-num.bronze {
+            color: #d97706;
+        }
+
+        .rank-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gradient-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        .rank-name {
+            flex: 1;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .rank-score {
+            font-family: var(--font-en);
+            font-weight: 700;
+            color: var(--accent-green);
+        }
+
+        /* ===== 갤러리 ===== */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+        }
+
+        .gallery-item {
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            aspect-ratio: 1;
+        }
+
+        .gallery-item.wide {
+            grid-column: span 2;
+            aspect-ratio: 2/1;
+        }
+
+        .gallery-item.tall {
+            grid-row: span 2;
+            aspect-ratio: auto;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.08);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.2) 60%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: flex-start;
+            padding: 24px;
+            color: #ffffff;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        .gallery-overlay span {
+            font-size: 1rem;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 4px;
+        }
+
+        .gallery-likes {
+            margin-top: 8px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+            padding: 4px 8px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            backdrop-filter: blur(4px);
+        }
+
+        .gallery-likes:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .gallery-likes i {
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .gallery-likes.active {
+            color: #ff4757;
+            background: rgba(255, 255, 255, 0.9);
+            font-weight: 700;
+        }
+
+        .gallery-likes.active i {
+            transform: scale(1.2);
+            color: #ff4757;
+        }
+
+        /* ===== 코트 안내 ===== */
+        .court-section {
+            background: var(--bg-secondary);
+        }
+
+        .court-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .court-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s;
+        }
+
+        .court-card:hover {
+            border-color: rgba(34, 197, 94, 0.3);
+        }
+
+        .court-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .court-body {
+            padding: 24px;
+        }
+
+        .court-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .court-detail {
+            font-size: 0.88rem;
+            color: var(--text-sub);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 6px;
+        }
+
+        .court-detail i {
+            color: var(--accent-green);
+            width: 16px;
+            font-size: 0.82rem;
+        }
+
+        .court-tags {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .court-tag-item {
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: rgba(15, 150, 136, 0.08);
+            color: var(--accent-teal);
+            font-weight: 600;
+        }
+
+        /* ===== 자기소개 ===== */
+        .about-section {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .about-img-wrap {
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 3/4;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .about-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .about-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 32px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-num {
+            font-family: var(--font-en);
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent-green);
+        }
+
+        .stat-label {
+            font-size: 0.82rem;
+            color: var(--text-sub);
+            margin-top: 4px;
+        }
+
+        /* ===== CTA ===== */
+        .cta-section {
+            padding: 80px 0;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(26, 159, 74, 0.05), rgba(15, 150, 136, 0.05));
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .cta-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .cta-desc {
+            color: var(--text-sub);
+            margin-bottom: 32px;
+        }
+
+        /* ===== 푸터 ===== */
+        .footer {
+            padding: 60px 0 30px;
+            background: #2a2a2a;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            color: #e0e0e0;
+        }
+
+        .footer .logo-text {
+            color: #ffffff;
+        }
+
+        .footer-top {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-brand-desc {
+            color: #aaa;
+            font-size: 0.88rem;
+            margin-top: 12px;
+            line-height: 1.7;
+        }
+
+        .footer-heading {
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #ffffff;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .footer-links a {
+            color: #aaa;
+            font-size: 0.88rem;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-green);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .footer-social a {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #aaa;
+            transition: all 0.3s;
+        }
+
+        .footer-social a:hover {
+            background: var(--gradient-main);
+            color: #fff;
+            border-color: transparent;
+        }
+
+        .footer-bottom {
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-copy {
+            font-size: 0.78rem;
+            color: #777;
+        }
+
+        /* ===== 반응형 ===== */
+        @media (max-width: 1024px) {
+            .hero-inner {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 40px;
             }
 
-            .nav-links {
+            .hero-desc {
+                margin: 0 auto 32px;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .hero-visual {
                 display: none;
-                /* 모바일 메뉴 구현은 생략 (간소화) */
             }
 
-            .section-header {
+            .quick-grid {
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            }
+
+            .footer-top {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 12px 0;
+            }
+
+            .logo-img {
+                height: 50px;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+
+            .nav-menu.active {
+                display: flex;
                 flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(255, 255, 255, 0.98);
+                padding: 30px 24px;
+                border-bottom: 1px solid var(--border-color);
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+                gap: 20px;
             }
 
-            .grid {
+            .nav-menu.active a {
+                font-size: 1.1rem;
+                width: 100%;
+                text-align: center;
+            }
+
+            .quick-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .about-layout {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .about-img-wrap {
+                margin: 0 auto;
+                max-width: 100%;
+                height: 300px !important;
+            }
+
+            .footer-top {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .footer-social {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                br {
+                    display: none;
+                }
+            }
+
+            .hero-buttons .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .quick-grid {
                 grid-template-columns: 1fr;
             }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-item.wide,
+            .gallery-item.tall {
+                grid-column: span 1;
+                grid-row: span 1;
+                aspect-ratio: 1;
+            }
+        }
+
+        /* ===== 스크롤 애니메이션 ===== */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
 
 <body>
-
     <!-- 헤더 -->
-    <header>
-        <div class="container">
-            <nav>
-                <div class="logo">MY<span>LOG</span></div>
-                <ul class="nav-links">
-                    <li><a href="#">홈</a></li>
-                    <li><a href="#">블로그</a></li>
-                    <li><a href="#">포트폴리오</a></li>
-                    <li><a href="#">정보</a></li>
-                </ul>
+    <header class="header" id="header">
+        <div class="container header-inner">
+            <a href="#" class="logo">
+                <img src="1741612437800.png" alt="BPA Logo" class="logo-img">
+                <span class="club-name">Pickle Smashers</span>
+            </a>
+            <nav class="nav-menu" id="navMenu">
+
+                <a href="#game">오늘의 게임</a>
+                <a href="#gallery">갤러리</a>
+                <a href="#news">소식/이벤트</a>
+                <a href="#contact">문의/참여하기</a>
             </nav>
+            <button class="mobile-toggle" id="mobileToggle" aria-label="메뉴 열기">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
     </header>
 
-    <!-- 히어로 섹션 -->
+    <!-- 히어로 -->
     <section class="hero">
-        <div class="container hero-content">
-            <h1>세상을 바꾸는<br>나만의 이야기</h1>
-            <p>프로그래밍, 디자인, 그리고 일상의 기록들을 공유합니다.<br>새로운 시각으로 만들어가는 디지털 공간에 오신 것을 환영합니다.</p>
-            <div class="hero-buttons">
-                <a href="#latest" class="btn btn-primary">글 읽기</a>
-                <a href="#about" class="btn btn-outline">소개 보기</a>
+        <div class="container hero-inner">
+            <div class="hero-text">
+                <div class="hero-badge"><span class="dot"></span> 피클볼 커뮤니티</div>
+                <h1 class="hero-title">
+                    함께 뛰고,<br>
+                    함께 즐기는<br>
+                    <span class="highlight">피클볼</span>
+                </h1>
+                <p class="hero-desc">
+                    피클볼를 좋아하는 사람들이 모여 즐기고, 공유하며<br>
+                    새로운 인연을 만드는 공간.
+                    누구나 참여 가능, 모두가 친구가 되는 클럽.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#gallery" class="btn btn-primary">
+                        <i class="fas fa-images"></i> 갤러리/활동 하이라이트
+                    </a>
+                    <a href="#contact" class="btn btn-ghost">
+                        <i class="fas fa-user-plus"></i> 참여하기 / 가입하기
+                    </a>
+                    <a href="#game" class="btn btn-ghost">
+                        <i class="fas fa-gamepad"></i> 오늘의 게임 보기
+                    </a>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- 최신 글 섹션 -->
-    <section id="latest" class="latest-posts">
+    <!-- 퀵 메뉴 -->
+    <section class="quick-menu">
         <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">최신 소식</h2>
-                <a href="#" class="view-all">전체 보기 &rarr;</a>
-            </div>
+            <div class="quick-grid">
 
-            <div class="grid">
-                <!-- 카드 1 -->
-                <article class="card">
-                    <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                        alt="코딩 이미지" class="card-img">
-                    <div class="card-content">
-                        <span class="card-category">개발 (Dev)</span>
-                        <h3 class="card-title">웹 표준과 접근성의 중요성</h3>
-                        <p class="card-excerpt">모든 사용자가 평등하게 정보를 이용할 수 있도록 웹 접근성을 준수하는 방법과 그 중요성에 대해 알아봅니다.</p>
-                        <a href="#" class="card-link">더 읽기</a>
-                    </div>
-                </article>
 
-                <!-- 카드 2 -->
-                <article class="card">
-                    <img src="https://images.unsplash.com/photo-1558655146-d09347e0c766?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                        alt="디자인 이미지" class="card-img">
-                    <div class="card-content">
-                        <span class="card-category">디자인 (Design)</span>
-                        <h3 class="card-title">2026년 UI/UX 트렌드 전망</h3>
-                        <p class="card-excerpt">미니멀리즘을 넘어선 새로운 인터페이스 디자인 트렌드와 사용자 경험을 극대화하는 전략을 소개합니다.</p>
-                        <a href="#" class="card-link">더 읽기</a>
-                    </div>
-                </article>
-
-                <!-- 카드 3 -->
-                <article class="card">
-                    <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                        alt="일상 이미지" class="card-img">
-                    <div class="card-content">
-                        <span class="card-category">일상 (Life)</span>
-                        <h3 class="card-title">효율적인 학습을 위한 팁</h3>
-                        <p class="card-excerpt">바쁜 일상 속에서도 꾸준히 자기계발을 할 수 있는 시간 관리 노하우와 학습 툴들을 공유합니다.</p>
-                        <a href="#" class="card-link">더 읽기</a>
-                    </div>
-                </article>
+                <a href="#game" class="quick-item fade-up">
+                    <div class="quick-icon"><i class="fas fa-gamepad"></i></div>
+                    <div class="quick-label">오늘의 게임</div>
+                    <div class="quick-sub">매칭 &amp; 모임</div>
+                </a>
+                <a href="#gallery" class="quick-item fade-up">
+                    <div class="quick-icon"><i class="fas fa-images"></i></div>
+                    <div class="quick-label">갤러리</div>
+                    <div class="quick-sub">사진/영상</div>
+                </a>
+                <a href="#news" class="quick-item fade-up">
+                    <div class="quick-icon"><i class="fas fa-bullhorn"></i></div>
+                    <div class="quick-label">소식/이벤트</div>
+                    <div class="quick-sub">공지 &amp; 모임</div>
+                </a>
             </div>
         </div>
     </section>
 
-    <!-- 소개 섹션 -->
-    <section id="about" class="about">
+    <!-- 갤러리 -->
+    <section class="section" id="gallery">
         <div class="container">
-            <h2 class="section-title" style="margin-bottom: 30px;">ABOUT ME</h2>
-            <p>저는 더 나은 웹 환경을 만들기 위해 끊임없이 고민하는 개발자입니다. <br>기술과 디자인의 경계를 허물고 사용자에게 감동을 주는 서비스를 만들고 싶습니다. <br>저의 여정에 함께해
-                주세요.</p>
-            <a href="#" class="btn btn-outline" style="border-color: var(--accent-blue); color: var(--accent-blue);">자세히
-                보기</a>
+            <div class="fade-up">
+                <div class="section-label">갤러리</div>
+                <h2 class="section-title">활동 하이라이트</h2>
+                <p class="section-desc">이용자들이 직접 공유하는 생동감 넘치는 피클볼 현장입니다.</p>
+            </div>
+            <div class="gallery-grid fade-up">
+                <div class="gallery-item wide">
+                    <img src="1765081690464.jpg" alt="부산-후쿠오카 국제교류 세미나" style="object-position: center bottom;">
+                    <div class="gallery-overlay">
+                        <span>📸 부산-후쿠오카 피클볼 국제교류 세미나 단체사진</span>
+                        <div class="gallery-likes" onclick="toggleLike(this, event)">
+                            <i class="fas fa-heart"></i> <span class="like-count">42</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="KakaoTalk_20260220_151617985.jpg" alt="정기모임">
+                    <div class="gallery-overlay">
+                        <span>👥 정기 일요 모임 단체사진</span>
+                        <div class="gallery-likes" onclick="toggleLike(this, event)">
+                            <i class="fas fa-heart"></i> <span class="like-count">28</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="Screenshot_20250519_131422_Instagram.jpg" alt="현장 스냅">
+                    <div class="gallery-overlay">
+                        <span>📸 이번 주 베스트 샷</span>
+                        <div class="gallery-likes" onclick="toggleLike(this, event)">
+                            <i class="fas fa-heart"></i> <span class="like-count">35</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="IMG_20250525_213902_244.jpg" alt="팀 부산 티셔츠">
+                    <div class="gallery-overlay">
+                        <span>👕 팀 부산 공식 티셔츠</span>
+                        <div class="gallery-likes" onclick="toggleLike(this, event)">
+                            <i class="fas fa-heart"></i> <span class="like-count">45</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="KakaoTalk_20260220_151619916.jpg" alt="이벤트">
+                    <div class="gallery-overlay">
+                        <span>🎉 소규모 토너먼트 시상식</span>
+                        <div class="gallery-likes" onclick="toggleLike(this, event)">
+                            <i class="fas fa-heart"></i> <span class="like-count">51</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item wide">
+                    <img src="혼합.png" alt="연습현장">
+                    <div class="gallery-overlay">
+                        <span>🏋️ 국제 피클볼 대회 한국-프랑스 경기!</span>
+                        <div class="gallery-likes" onclick="toggleLike(this, event)">
+                            <i class="fas fa-heart"></i> <span class="like-count">33</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align:center;margin-top:32px">
+                <a href="#contact" class="btn btn-ghost"><i class="fas fa-camera"></i> 사진/영상 업로드 하기</a>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- 오늘의 게임 / 매칭 -->
+    <section class="section" id="game">
+        <div class="container">
+            <div class="fade-up">
+                <div class="section-label">오늘의 게임</div>
+                <h2 class="section-title">함께 즐기는 피클볼 🏓</h2>
+                <p class="section-desc">사진, 영상, 후기를 자유롭게 업로드하고 오늘의 게임 파트너를 찾아보세요.</p>
+            </div>
+            <div class="tournament-grid">
+                <article class="tournament-card fade-up">
+                    <img src="https://images.unsplash.com/photo-1526232761682-d26e03ac148e?w=600&q=80" alt="매칭"
+                        class="tournament-img">
+                    <div class="tournament-body">
+                        <span class="tournament-tag upcoming">오늘 모임</span>
+                        <h3 class="tournament-name">토요일 오픈 플레이 (4:4 혼합)</h3>
+                        <div class="tournament-info">
+                            <span><i class="fas fa-calendar-alt"></i> 2026.02.22 토 10:00</span>
+                            <span><i class="fas fa-map-marker-alt"></i> 올림픽공원 코트</span>
+                            <span><i class="fas fa-users"></i> 레벨/연령 무관 누구나</span>
+                        </div>
+                    </div>
+                </article>
+                <article class="tournament-card fade-up">
+                    <img src="https://images.unsplash.com/photo-1587280501635-68a0e82cd5ff?w=600&q=80" alt="모임"
+                        class="tournament-img">
+                    <div class="tournament-body">
+                        <span class="tournament-tag">주말 모임</span>
+                        <h3 class="tournament-name">일요일 라운드로빈 &amp; 친선 매칭</h3>
+                        <div class="tournament-info">
+                            <span><i class="fas fa-calendar-alt"></i> 2026.02.23 일 09:00</span>
+                            <span><i class="fas fa-map-marker-alt"></i> 일산 호수공원 코트</span>
+                            <span><i class="fas fa-users"></i> 신청 인원: 16명</span>
+                        </div>
+                    </div>
+                </article>
+                <article class="tournament-card fade-up">
+                    <img src="https://images.unsplash.com/photo-1461896836934-bd45ba8a0a44?w=600&q=80" alt="이벤트"
+                        class="tournament-img">
+                    <div class="tournament-body">
+                        <span class="tournament-tag closed">모집완료</span>
+                        <h3 class="tournament-name">열린 피클볼 초보 클래스</h3>
+                        <div class="tournament-info">
+                            <span><i class="fas fa-calendar-alt"></i> 2026.02.15 ~ 02.16</span>
+                            <span><i class="fas fa-map-marker-alt"></i> 강남 스포츠센터</span>
+                            <span><i class="fas fa-users"></i> 초보자 대상 무료</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            <div style="text-align:center;margin-top:32px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+                <a href="#contact" class="btn btn-primary"><i class="fas fa-gamepad"></i> 오늘의 게임 확인</a>
+                <a href="#gallery" class="btn btn-ghost"><i class="fas fa-camera"></i> 사진/영상 업로드</a>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- 소식 / 이벤트 -->
+    <section class="section notice-section" id="news">
+        <div class="container">
+            <div class="fade-up">
+                <div class="section-label">소식/이벤트</div>
+                <h2 class="section-title">피클볼 소식 &amp; 이벤트</h2>
+                <p class="section-desc">클럽 공지, 오픈 모임, 소규모 이벤트 정보를 확인하세요.</p>
+            </div>
+            <div class="notice-layout">
+                <div class="fade-up">
+                    <div class="notice-list">
+                        <div class="notice-item">
+                            <span class="notice-badge important">모임</span>
+                            <span class="notice-text">2/22(토) 올림픽공원 오픈 플레이 — 누구나 참여 가능!</span>
+                            <span class="notice-date">2026.02.20</span>
+                        </div>
+                        <div class="notice-item">
+                            <span class="notice-badge">공지</span>
+                            <span class="notice-text">3월 정기 연습 일정 (매주 토요일 10:00~12:00)</span>
+                            <span class="notice-date">2026.02.15</span>
+                        </div>
+                        <div class="notice-item">
+                            <span class="notice-badge">이벤트</span>
+                            <span class="notice-text">초보자 무료 클래스 — 2/15~16 강남 스포츠센터</span>
+                            <span class="notice-date">2026.02.10</span>
+                        </div>
+                        <div class="notice-item">
+                            <span class="notice-badge">공지</span>
+                            <span class="notice-text">코트 &amp; 장비 공유 게시판 오픈 안내</span>
+                            <span class="notice-date">2026.02.05</span>
+                        </div>
+                        <div class="notice-item">
+                            <span class="notice-badge">후기</span>
+                            <span class="notice-text">1월 라운드로빈 게임 하이라이트 영상 공유</span>
+                            <span class="notice-date">2026.01.28</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="ranking-card fade-up">
+                    <div class="ranking-title"><i class="fas fa-star" style="color:#f59e0b"></i> 이번 주 인기 게시글</div>
+                    <div class="ranking-item">
+                        <span class="rank-num gold">1</span>
+                        <div class="rank-avatar">👍</div>
+                        <span class="rank-name">올림픽공원 코트 사용 후기</span>
+                        <span class="rank-score">좋아요 38</span>
+                    </div>
+                    <div class="ranking-item">
+                        <span class="rank-num silver">2</span>
+                        <div class="rank-avatar">📸</div>
+                        <span class="rank-name">토요일 게임 사진 모음</span>
+                        <span class="rank-score">좋아요 27</span>
+                    </div>
+                    <div class="ranking-item">
+                        <span class="rank-num bronze">3</span>
+                        <div class="rank-avatar">🏓</div>
+                        <span class="rank-name">피클볼 패들 공동구매 안내</span>
+                        <span class="rank-score">좋아요 21</span>
+                    </div>
+                    <div class="ranking-item">
+                        <span class="rank-num">4</span>
+                        <div class="rank-avatar">🎾</div>
+                        <span class="rank-name">초보자 질문 &amp; 답변 모음</span>
+                        <span class="rank-score">좋아요 18</span>
+                    </div>
+                    <div class="ranking-item">
+                        <span class="rank-num">5</span>
+                        <div class="rank-avatar">📍</div>
+                        <span class="rank-name">일산 야외코트 사용 가능 시간</span>
+                        <span class="rank-score">좋아요 15</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- 오시는 길 / 위치 -->
+    <section class="section about-section" id="about">
+        <div class="container">
+            <div class="fade-up" style="text-align:center;margin-bottom:48px">
+                <div class="section-label">오시는 길</div>
+                <h2 class="section-title">가까운 코트에서 만나요!</h2>
+                <p class="section-desc">주요 활동 코트 위치를 확인하고 지금 바로 참여해보세요.</p>
+            </div>
+            <div class="about-layout">
+                <div class="about-img-wrap fade-up"
+                    style="height:400px;background:#f8f9fa;display:flex;align-items:center;justify-content:center;border-radius:24px;overflow:hidden;position:relative;border:1px solid var(--border-color)">
+                    <a href="https://map.kakao.com/?q=부산 동래구 사직로 77" target="_blank"
+                        style="width:100%;height:100%;display:block;position:relative">
+                        <div
+                            style="width:100%;height:100%;background:url('https://images.unsplash.com/photo-1541339907198-e08756ebafe3?w=800&q=80') no-repeat center/cover;opacity:0.9;">
+                        </div>
+                        <div
+                            style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;background:rgba(255,255,255,0.95);padding:18px 30px;border-radius:50px;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:12px;border:2px solid var(--primary);transition:all 0.3s">
+                            <i class="fas fa-map-marker-alt" style="color:var(--primary);font-size:1.4rem"></i>
+                            <span style="color:var(--text-main);font-weight:800;font-size:1.1rem">카카오맵에서 코트 위치 보기</span>
+                        </div>
+                        <div
+                            style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.7);color:#fff;padding:14px;text-align:center;font-size:0.95rem;backdrop-filter:blur(6px)">
+                            <i class="fas fa-search-location"></i> 안내: 부산광역시체육회 및 인근 전용 코트 위치 안내
+                        </div>
+                    </a>
+                </div>
+                <div class="fade-up">
+                    <p style="color: var(--text-sub); line-height: 1.9; margin-bottom: 24px; font-size: 1.1rem">
+                        “가까운 코트를 찾아 오늘 바로 함께 뛰어보세요!<br>
+                        문의 및 참여는 아래 연락처로 언제든 환영합니다.”
+                    </p>
+                    <div class="footer-links" style="display:grid;gap:16px;margin-bottom:32px">
+                        <div style="display:flex;align-items:center;gap:12px">
+                            <div class="quick-icon" style="width:40px;height:40px;font-size:1rem"><i
+                                    class="fas fa-map-marker-alt"></i></div>
+                            <div>
+                                <div style="font-weight:600">주요 모임 장소 (부산광역시체육회)</div>
+                                <div style="font-size:0.9rem;color:var(--text-sub)">부산 동래구 사직로 77 지하1층, 1-6층</div>
+                            </div>
+                        </div>
+                        <div style="display:flex;gap:12px">
+                            <a href="#contact" class="btn btn-primary">참여 문의하기</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section" id="contact">
+        <div class="container fade-up">
+            <h2 class="cta-title">지금 바로 참여하세요! 🏓</h2>
+            <p class="cta-desc">경쟁보다 즐거움이 먼저입니다. 오늘의 한 게임이 새로운 인연이 됩니다.</p>
+            <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 32px;">
+
+                <a href="https://www.instagram.com/pickball0000" target="_blank" class="btn btn-instagram">
+                    <i class="fab fa-instagram"></i> 인스타그램 팔로우
+                </a>
+                <a href="mailto:msjw0408@gmail.com" class="btn btn-ghost">
+                    <i class="fas fa-envelope"></i> 가입/문의 메일
+                </a>
+            </div>
         </div>
     </section>
 
     <!-- 푸터 -->
-    <footer>
+    <footer class="footer">
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <div class="footer-logo">MY<span>LOG</span></div>
-                    <p style="color: #666; max-width: 300px;">나만의 생각과 경험을 기록하는 공간입니다.</p>
+            <div class="footer-top">
+                <div>
+                    <a href="#" class="logo" style="margin-bottom: 12px;">
+                        <img src="1741612437800.png" alt="BPA Logo"
+                            style="height: 56px; width: auto; object-fit: contain;">
+                    </a>
+                    <p class="footer-brand-desc" style="font-weight: 500; color: #fff; margin-bottom: 8px;">
+                        "작은 코트, 큰 즐거움"
+                    </p>
+                    <p class="footer-brand-desc">
+                        피클볼을 좋아하는 사람들이 모여 즐기고,<br>
+                        공유하며 새로운 인연을 만드는 커뮤니티 공간입니다.
+                    </p>
+                    <div class="footer-social">
+                        <a href="https://www.instagram.com/pickball0000" target="_blank"><i
+                                class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fas fa-comment"></i></a>
+                        <a href="mailto:msjw0408@gmail.com"><i class="fas fa-envelope"></i></a>
+                    </div>
                 </div>
-                <div class="social-links">
-                    <a href="#">Instagram</a>
-                    <a href="#">Twitter</a>
-                    <a href="#">GitHub</a>
-                    <a href="#">LinkedIn</a>
+                <div>
+                    <div class="footer-heading">메뉴</div>
+                    <div class="footer-links">
+                        <a href="#community">커뮤니티</a>
+                        <a href="#courts">코트&amp;장비</a>
+                        <a href="#game">오늘의 게임</a>
+                        <a href="#gallery">갤러리</a>
+                    </div>
+                </div>
+                <div>
+                    <div class="footer-heading">링크</div>
+                    <div class="footer-links">
+                        <a href="#news">소식/이벤트</a>
+                        <a href="#contact">참여하기</a>
+
+                        <a href="https://www.instagram.com/pickball0000" target="_blank">인스타그램</a>
+                    </div>
+                </div>
+                <div>
+                    <div class="footer-heading">문의</div>
+                    <div class="footer-links">
+                        <a href="mailto:msjw0408@gmail.com"><i class="fas fa-envelope"
+                                style="margin-right:6px;"></i>msjw0408@gmail.com</a>
+
+                        <a href="#"><i class="fas fa-map-marker-alt" style="margin-right:6px;"></i>코트에서 만나요!</a>
+                    </div>
                 </div>
             </div>
-            <div class="copyright">
-                &copy; 2026 My Personal Blog. All rights reserved.
+            <div class="footer-bottom">
+                <span class="footer-copy">&copy; 2026 Your Pickleball Community. All Rights Reserved.</span>
+                <span class="footer-copy">"경쟁보다 즐거움이 먼저입니다."</span>
             </div>
         </div>
     </footer>
 
+    <script>
+        // 헤더 스크롤 효과
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // 모바일 메뉴 토글
+        const mobileToggle = document.getElementById('mobileToggle');
+        const navMenu = document.getElementById('navMenu');
+        mobileToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            const icon = mobileToggle.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
+        // 메뉴 링크 클릭 시 메뉴 닫기
+        navMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                const icon = mobileToggle.querySelector('i');
+                icon.classList.add('fa-bars');
+                icon.classList.remove('fa-times');
+            });
+        });
+
+        // 스크롤 애니메이션
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+        // 카운트업 애니메이션
+        const countObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const el = entry.target;
+                    const target = el.textContent;
+                    const numMatch = target.match(/(\d+)/);
+                    if (numMatch) {
+                        const num = parseInt(numMatch[1]);
+                        const suffix = target.replace(numMatch[0], '');
+                        let current = 0;
+                        const step = Math.max(1, Math.floor(num / 30));
+                        const timer = setInterval(() => {
+                            current += step;
+                            if (current >= num) {
+                                current = num;
+                                clearInterval(timer);
+                            }
+                            el.textContent = current + suffix;
+                        }, 40);
+                    }
+                    countObserver.unobserve(el);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.stat-num').forEach(el => countObserver.observe(el));
+        document.querySelectorAll('.float-card-value').forEach(el => countObserver.observe(el));
+
+        // 좋아요 누적 기능
+        function toggleLike(el, event) {
+            event.stopPropagation();
+            const countEl = el.querySelector('.like-count');
+            let count = parseInt(countEl.textContent);
+
+            // 숫자가 계속 올라가게 수정
+            countEl.textContent = count + 1;
+
+            // 시각적 활성화 및 애니메이션
+            el.classList.add('active');
+
+            // 클릭할 때마다 하트 팝 이펙트
+            const heart = el.querySelector('i');
+            heart.style.transform = 'scale(1.6)';
+            setTimeout(() => {
+                heart.style.transform = 'scale(1.2)';
+            }, 150);
+        }
+    </script>
 </body>
 
 </html>
